@@ -6,7 +6,10 @@ import toast from 'react-hot-toast';
 
 function Dashboard() {
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    const storedUser = localStorage.getItem("user");
+    const user = storedUser && storedUser !== "undefined"
+        ? JSON.parse(storedUser)
+        : null;
     const token = localStorage.getItem("token");
 
     const [services, setServices] = useState([]);
@@ -130,8 +133,8 @@ function Dashboard() {
                                     disabled={cancelling}
                                     onClick={() => cancelToken(myToken._id)}
                                     className={`w-full lg:w-auto text-white px-5 py-3 rounded-xl font-semibold shadow transition ${cancelling
-                                            ? "bg-red-400 cursor-not-allowed"
-                                            : "bg-red-600 hover:bg-red-700"
+                                        ? "bg-red-400 cursor-not-allowed"
+                                        : "bg-red-600 hover:bg-red-700"
                                         }`}
                                 >
                                     {cancelling ? "Cancelling..." : "Cancel Token"}
@@ -191,8 +194,8 @@ function Dashboard() {
                                         disabled={generatingId === service._id}
                                         onClick={() => generateToken(service._id)}
                                         className={`mt-5 w-full text-white px-4 py-3 rounded-xl font-semibold shadow transition ${generatingId === service._id
-                                                ? "bg-blue-400 cursor-not-allowed"
-                                                : "bg-blue-600 hover:bg-blue-700"
+                                            ? "bg-blue-400 cursor-not-allowed"
+                                            : "bg-blue-600 hover:bg-blue-700"
                                             }`}
                                     >
                                         {generatingId === service._id
