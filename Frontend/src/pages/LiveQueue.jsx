@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import API from '../services/api.js';
 import { io } from "socket.io-client";
 
-const socket = io("https://queueease-backend-20e9.onrender.com");
+const socket = io("import.meta.env.VITE_SOCKET_URL");
 
 function LiveQueue() {
 

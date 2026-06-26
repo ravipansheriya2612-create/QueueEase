@@ -4,7 +4,7 @@ import API from "../services/api";
 import { io } from "socket.io-client";
 import toast from "react-hot-toast";
 
-const socket = io("https://queueease-backend-20e9.onrender.com");
+const socket = io("import.meta.env.VITE_SOCKET_URL");
 
 function ManageQueue() {
     const token = localStorage.getItem("token");

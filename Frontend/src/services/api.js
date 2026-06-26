@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "https://queueease-backend-20e9.onrender.com/api"
+    baseURL: "import.meta.env.VITE_API_UR"
 });
 
 export default API;
