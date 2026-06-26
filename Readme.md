@@ -1,0 +1,5 @@
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMzkxZWYwOGM0ZjJjN2FhMmM4MmZiMyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzgyMTI4NTY5LCJleHAiOjE3ODI3MzMzNjl9.c8VvzcF1E_X7fFFfjQVuQNpf0ITzRrH9M1PK6a-65Mw
+
+sms, responsiveness,
+
+if you add email system then remove phone number from the model and register page 
