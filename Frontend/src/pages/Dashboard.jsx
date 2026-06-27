@@ -7,9 +7,7 @@ import toast from 'react-hot-toast';
 function Dashboard() {
 
     const storedUser = localStorage.getItem("user");
-    const user = storedUser && storedUser !== "undefined"
-        ? JSON.parse(storedUser)
-        : null;
+    const user = storedUser && storedUser !== "undefined" ? JSON.parse(storedUser) : null;
     const token = localStorage.getItem("token");
 
     const [services, setServices] = useState([]);
