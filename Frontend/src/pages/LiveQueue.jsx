@@ -11,22 +11,37 @@ function LiveQueue() {
     const [services, setServices] = useState([]);
     const [selectedService, setSelectedService] = useState("");
     const [tokens, setTokens] = useState([]);
+    const [loadingServices, setLoadingServices] = useState(true);
+    const [loadingQueue, setLoadingQueue] = useState(false);
 
     const fetchServices = async () => {
+        setLoadingServices(true);
+
         try {
             const res = await API.get("/services");
             setServices(res.data.services);
         } catch (error) {
-            console.log(error);
+            toast.error("Failed to load departments");
+        } finally {
+            setLoadingServices(false);
         }
     };
 
     const fetchQueue = async (serviceId) => {
+        if (!serviceId) {
+            setTokens([]);
+            return;
+        }
+
+        setLoadingQueue(true);
+
         try {
             const res = await API.get(`/tokens/live/${serviceId}`);
             setTokens(res.data.tokens);
         } catch (error) {
-            console.log(error);
+            toast.error("Failed to load queue");
+        } finally {
+            setLoadingQueue(false);
         }
     };
 
@@ -47,10 +62,6 @@ function LiveQueue() {
         });
 
         socket.on("token_completed", () => {
-            fetchQueue(selectedService);
-        });
-
-        socket.on("queue_updated", () => {
             fetchQueue(selectedService);
         });
 
@@ -85,13 +96,15 @@ function LiveQueue() {
                         <select
                             className="w-full sm:w-96 border border-slate-300 bg-slate-50 p-3 rounded-xl mb-6 outline-none focus:ring-2 focus:ring-blue-500"
                             value={selectedService}
+                            disabled={loadingServices}
                             onChange={(e) => {
                                 setSelectedService(e.target.value);
                                 fetchQueue(e.target.value);
                             }}
                         >
-                            <option value="">Select Department</option>
-
+                            <option value="">
+                                {loadingServices ? "Loading departments..." : "Select Department"}
+                            </option>
                             {services.map((service) => (
                                 <option key={service._id} value={service._id}>
                                     {service.name}
@@ -99,7 +112,17 @@ function LiveQueue() {
                             ))}
                         </select>
 
-                        {tokens.length === 0 ? (
+                        {!selectedService ? (
+                            <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100">
+                                <p className="text-slate-500 font-medium">
+                                    Please select a department to view the live queue.
+                                </p>
+                            </div>
+                        ) : loadingQueue ? (<div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col items-center">
+                            <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+                            <p className="text-slate-500 font-medium mt-4">Loading queue...</p>
+                        </div>
+                        ) : tokens.length === 0 ? (
                             <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100">
                                 <p className="text-slate-500 font-medium">
                                     No active queue

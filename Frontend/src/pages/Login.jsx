@@ -20,23 +20,43 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (loading) return;
         setLoading(true);
 
         try {
 
-            const res = await API.post("/auth/login", formData);
+            const payload = {
+                email: formData.email.trim().toLowerCase(),
+                password: formData.password,
+            };
+
+            const res = await API.post("/auth/login", payload);
+
+            if (!res.data?.token || !res.data?.user) {
+                toast.error("Login failed");
+                return;
+            }
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
 
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", JSON.stringify(res.data.user));
 
             toast.success("Login successful");
-            navigate("/");
+            if (res.data.user.role === "admin") {
+                navigate("/admin");
+            } else {
+                navigate("/dashboard");
+            }
         } catch (error) {
             toast.error(error.response?.data?.message || "Login failed");
         } finally {
             setLoading(false);
         }
     }
+    
     return (
         <div className="min-h-screen bg-linear-to-br from-blue-50 via-slate-100 to-cyan-50 flex items-center justify-center px-4 sm:px-6 py-8">
             <div className="w-full max-w-md">
@@ -67,10 +87,11 @@ function Login() {
                             <input
                                 type="email"
                                 name="email"
+                                disabled={loading}
                                 placeholder="Enter your email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
                                 required
                             />
                         </div>
@@ -83,10 +104,11 @@ function Login() {
                             <input
                                 type="password"
                                 name="password"
+                                disabled={loading}
                                 placeholder="Enter your password"
                                 value={formData.password}
                                 onChange={handleChange}
-                                className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
                                 required
                             />
                         </div>
@@ -95,8 +117,8 @@ function Login() {
                             type="submit"
                             disabled={loading}
                             className={`w-full py-3 rounded-xl font-semibold shadow-lg transition text-white ${loading
-                                    ? "bg-blue-400 cursor-not-allowed"
-                                    : "bg-blue-600 hover:bg-blue-700"
+                                ? "bg-blue-400 cursor-not-allowed"
+                                : "bg-blue-600 hover:bg-blue-700"
                                 }`}
                         >
                             {loading ? "Logging in..." : "Login"}
@@ -108,7 +130,8 @@ function Login() {
                             Don't have an account?{" "}
                             <Link
                                 to="/register"
-                                className="text-blue-600 font-semibold hover:underline"
+                                className={`text-blue-600 font-semibold hover:underline ${loading ? "pointer-events-none opacity-60" : ""
+                                    }`}
                             >
                                 Register
                             </Link>

@@ -25,13 +25,25 @@ function CreateDepartment() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (loading) return;
+
         setLoading(true);
 
         try {
-            await API.post("/services", formData, { headers: { Authorization: `Bearer ${token}` } });
+            const payload = {
+                name: formData.name.trim(),
+                description: formData.description.trim(),
+                averageServiceTime: Number(formData.averageServiceTime),
+            };
+
+            await API.post("/services", payload, { headers: { Authorization: `Bearer ${token}` } });
 
             toast.success("Department created successfully");
-            navigate("/admin/departments");
+            setTimeout(() => {
+                navigate("/admin/departments");
+            }, 800);
+
         } catch (error) {
             toast.error(error.response?.data?.message || "Department creation failed");
         } finally {
@@ -74,8 +86,9 @@ function CreateDepartment() {
                                     name="name"
                                     placeholder="e.g. Cardiology"
                                     value={formData.name}
+                                    disabled={loading}
                                     onChange={handleChange}
-                                    className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
                                     required
                                 />
                             </div>
@@ -89,9 +102,10 @@ function CreateDepartment() {
                                     name="description"
                                     placeholder="Enter department description..."
                                     value={formData.description}
+                                    disabled={loading}
                                     onChange={handleChange}
                                     rows="4"
-                                    className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                                    className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
                                     required
                                 />
                             </div>
@@ -106,8 +120,10 @@ function CreateDepartment() {
                                     name="averageServiceTime"
                                     placeholder="e.g. 15"
                                     value={formData.averageServiceTime}
+                                    disabled={loading}
                                     onChange={handleChange}
-                                    className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                                    min="1"
+                                    className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
                                     required
                                 />
                             </div>

@@ -8,6 +8,7 @@ function ManageDepartments() {
     const token = localStorage.getItem("token");
     const [services, setServices] = useState([]);
     const [deletingId, setDeletingId] = useState(null);
+    const [loadingServices, setLoadingServices] = useState(true);
 
     const authHeader = {
         headers: {
@@ -16,11 +17,22 @@ function ManageDepartments() {
     };
 
     const fetchServices = async () => {
-        const res = await API.get("/services");
-        setServices(res.data.services);
+        setLoadingServices(true);
+
+        try {
+            const res = await API.get("/services");
+            setServices(res.data.services);
+        } catch (error) {
+            toast.error("Failed to load departments");
+        } finally {
+            setLoadingServices(false);
+        }
     };
 
     const deleteDepartment = async (id) => {
+
+        if (deletingId) return;
+
         const confirmDelete = window.confirm("Delete this department?");
         if (!confirmDelete) return;
 
@@ -70,7 +82,14 @@ function ManageDepartments() {
                         </Link>
                     </div>
 
-                    {services.length === 0 ? (
+                    {loadingServices ? (
+                        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-10 flex flex-col items-center justify-center">
+                            <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+                            <p className="mt-4 text-slate-500 font-medium">
+                                Loading departments...
+                            </p>
+                        </div>
+                    ) : services.length === 0 ? (
                         <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-10 text-center">
                             <p className="text-slate-500">
                                 No departments found.

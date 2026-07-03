@@ -18,7 +18,7 @@ function Home() {
                         </h1>
 
                         <p className="text-slate-600 mt-6 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                            MediQueue allows patients to generate digital tokens, track live
+                            QueueEase allows patients to generate digital tokens, track live
                             queue status, and get estimated waiting time in real-time.
                         </p>
 
@@ -96,7 +96,7 @@ function Home() {
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-16 sm:pb-20">
                     <h2 className="text-2xl sm:text-3xl font-extrabold text-center text-slate-800 mb-3">
-                        How MediQueue Works
+                        How QueueEase Works
                     </h2>
 
                     <p className="text-center text-slate-500 mb-10">

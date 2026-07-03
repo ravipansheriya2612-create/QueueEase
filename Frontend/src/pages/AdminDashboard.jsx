@@ -6,6 +6,7 @@ import API from "../services/api";
 function AdminDashboard() {
   const token = localStorage.getItem("token");
   const [analytics, setAnalytics] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const authHeader = {
     headers: {
@@ -14,8 +15,16 @@ function AdminDashboard() {
   };
 
   const fetchAnalytics = async () => {
-    const res = await API.get("/tokens/admin/analytics", authHeader);
-    setAnalytics(res.data);
+    setLoading(true);
+
+    try {
+      const res = await API.get("/tokens/admin/analytics", authHeader);
+      setAnalytics(res.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -38,7 +47,12 @@ function AdminDashboard() {
             </h1>
           </div>
 
-          {analytics && (
+          {loading ? (
+            <div className="bg-white rounded-2xl p-10 shadow-lg border border-slate-200 mb-8 flex flex-col items-center">
+              <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+              <p className="mt-4 text-slate-500 font-medium">Loading analytics...</p>
+            </div>
+          ) : analytics && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-8">
               {[
                 ["Total Tokens", analytics.totalTokens, "text-slate-900"],

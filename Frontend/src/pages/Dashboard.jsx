@@ -10,21 +10,39 @@ function Dashboard() {
     const user = storedUser && storedUser !== "undefined" ? JSON.parse(storedUser) : null;
     const token = localStorage.getItem("token");
 
+    if (!token) {
+        window.location.href = "/login";
+        return null;
+    }
+
     const [services, setServices] = useState([]);
     const [myToken, setMyToken] = useState(null);
     const [generatingId, setGeneratingId] = useState(null);
     const [cancelling, setCancelling] = useState(false);
+    const [loadingServices, setLoadingServices] = useState(true);
 
     const fetchServices = async () => {
+        setLoadingServices(true);
+
         try {
             const res = await API.get("/services");
             setServices(res.data.services);
         } catch (error) {
             toast.error("Failed to load departments");
+        } finally {
+            setLoadingServices(false);
         }
     };
 
     const generateToken = async (serviceId) => {
+
+        if (myToken) {
+            toast.error("You already have an active token");
+            return;
+        }
+
+        if (generatingId) return;
+
         setGeneratingId(serviceId);
 
         try {
@@ -32,6 +50,7 @@ function Dashboard() {
 
             toast.success(`Token generated: ${res.data.token.tokenNumber}`);
             fetchMyToken();
+            fetchServices();
 
         } catch (error) {
             toast.error(error.response?.data?.message || "Token generation failed");
@@ -46,13 +65,20 @@ function Dashboard() {
 
             setMyToken(res.data.token);
         } catch (error) {
-            console.log(error);
+            if (error.response?.status !== 404) {
+                toast.error("Failed to load your token");
+            }
         }
     }
 
-    useEffect(() => { fetchServices(), fetchMyToken() }, []);
+    useEffect(() => {
+        fetchServices();
+        fetchMyToken();
+    }, []);
 
     const cancelToken = async (id) => {
+        if (cancelling) return;
+
         setCancelling(true);
 
         try {
@@ -61,6 +87,7 @@ function Dashboard() {
 
             toast.success("Token cancelled successfully");
             fetchMyToken();
+            fetchServices();
 
         } catch (error) {
             toast.error(error.response?.data?.message || "Token cancel failed");
@@ -129,7 +156,11 @@ function Dashboard() {
 
                                 <button
                                     disabled={cancelling}
-                                    onClick={() => cancelToken(myToken._id)}
+                                    onClick={() => {
+                                        if (window.confirm("Are you sure you want to cancel your token?")) {
+                                            cancelToken(myToken._id);
+                                        }
+                                    }}
                                     className={`w-full lg:w-auto text-white px-5 py-3 rounded-xl font-semibold shadow transition ${cancelling
                                         ? "bg-red-400 cursor-not-allowed"
                                         : "bg-red-600 hover:bg-red-700"
@@ -153,10 +184,23 @@ function Dashboard() {
                         </div>
                     </div>
 
-                    {services.length === 0 ? (
+                    {loadingServices ? (
+                        <div className="bg-white rounded-2xl shadow border border-slate-200 p-10 flex flex-col items-center justify-center">
+                            <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+
+                            <p className="mt-5 text-slate-500 font-medium">
+                                Loading hospital departments...
+                            </p>
+
+                            <p className="text-sm text-slate-400 mt-1">
+                                The server is waking up. This may take up to 30–60 seconds on the first request.
+                            </p>
+                        </div>
+                    ) : services.length === 0 ? (
                         <div className="bg-white rounded-2xl shadow border border-slate-200 p-10 text-center">
                             <p className="text-slate-500">
-                                No departments available.
+                                No hospital departments are available at the moment.
+                                Please check again later.
                             </p>
                         </div>
                     ) : (
@@ -189,16 +233,17 @@ function Dashboard() {
                                     </div>
 
                                     <button
-                                        disabled={generatingId === service._id}
-                                        onClick={() => generateToken(service._id)}
+                                        disabled={generatingId === service._id || myToken} onClick={() => generateToken(service._id)}
                                         className={`mt-5 w-full text-white px-4 py-3 rounded-xl font-semibold shadow transition ${generatingId === service._id
                                             ? "bg-blue-400 cursor-not-allowed"
                                             : "bg-blue-600 hover:bg-blue-700"
                                             }`}
                                     >
-                                        {generatingId === service._id
-                                            ? "Generating..."
-                                            : "Generate Token"}
+                                        {myToken
+                                            ? "Token Already Active"
+                                            : generatingId === service._id
+                                                ? "Generating..."
+                                                : "Generate Token"}
                                     </button>
                                 </div>
                             ))}

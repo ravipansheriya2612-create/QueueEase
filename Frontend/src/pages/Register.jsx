@@ -2,7 +2,6 @@ import React from 'react';
 import API from '../services/api.js';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ImageOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 function Register() {
@@ -24,21 +23,37 @@ function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (loading) return;
+
+        const payload = {
+            name: formData.name.trim(),
+            email: formData.email.trim().toLowerCase(),
+            password: formData.password,
+            phone: formData.phone.trim(),
+        };
+
+        if (!payload.name || !payload.email || !payload.password || !payload.phone) {
+            toast.error("All fields are required");
+            return;
+        }
+
         setLoading(true);
 
         try {
-            await API.post("/auth/register", formData);
+            const res = await API.post("/auth/register", payload);
 
-            const loginRes = await API.post("/auth/login", {
-                email: formData.email,
-                password: formData.password,
-            });
+            if (!res.data?.token || !res.data?.user) {
+                toast.error("Registration failed");
+                return;
+            }
 
-            localStorage.setItem("token", loginRes.data.token);
-            localStorage.setItem("user", JSON.stringify(loginRes.data.user));
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
 
             toast.success("Registration successful");
             navigate("/dashboard");
+
         } catch (error) {
             toast.error(error.response?.data?.message || "Registration failed");
         } finally {
@@ -71,40 +86,44 @@ function Register() {
                         <input
                             type="text"
                             name="name"
+                            disabled={loading}
                             placeholder="Full name"
                             value={formData.name}
                             onChange={handleChange}
-                            className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
                             required
                         />
 
                         <input
                             type="email"
                             name="email"
+                            disabled={loading}
                             placeholder="Email address"
                             value={formData.email}
                             onChange={handleChange}
-                            className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
                             required
                         />
 
                         <input
                             type="text"
                             name="phone"
+                            disabled={loading}
                             placeholder="Phone number with country code"
                             value={formData.phone}
                             onChange={handleChange}
-                            className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
                             required
                         />
 
                         <input
                             type="password"
                             name="password"
+                            disabled={loading}
                             placeholder="Password"
                             value={formData.password}
                             onChange={handleChange}
-                            className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
                             required
                         />
 
@@ -124,7 +143,8 @@ function Register() {
                         Already have an account?{" "}
                         <Link
                             to="/login"
-                            className="text-blue-600 font-semibold hover:underline"
+                            className={`text-blue-600 font-semibold hover:underline ${loading ? "pointer-events-none opacity-60" : ""
+                                }`}
                         >
                             Login
                         </Link>

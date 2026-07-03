@@ -14,6 +14,7 @@ function ManageQueue() {
     const [tokens, setTokens] = useState([]);
     const [actionLoading, setActionLoading] = useState(null);
     const [pageLoading, setPageLoading] = useState(false);
+    const [loadingServices, setLoadingServices] = useState(true);
 
     const authHeader = {
         headers: {
@@ -22,11 +23,15 @@ function ManageQueue() {
     };
 
     const fetchServices = async () => {
+        setLoadingServices(true);
+
         try {
             const res = await API.get("/services");
             setServices(res.data.services);
         } catch (error) {
             toast.error("Failed to load departments");
+        } finally {
+            setLoadingServices(false);
         }
     };
 
@@ -45,11 +50,14 @@ function ManageQueue() {
     };
 
     const handleTokenAction = async (id, action) => {
+        if (actionLoading) return;
+
         setActionLoading(`${action}-${id}`);
 
         try {
             await API.put(`/tokens/admin/${id}/${action}`, {}, authHeader);
             await fetchQueue(selectedService);
+            toast.success(`Token ${action}ed successfully`);
         } catch (error) {
             toast.error(error.response?.data?.message || `${action} failed`);
         } finally {
@@ -116,7 +124,7 @@ function ManageQueue() {
                         <select
                             className="w-full sm:w-96 border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
                             value={selectedService}
-                            disabled={pageLoading || actionLoading}
+                            disabled={loadingServices || pageLoading || actionLoading}
                             onChange={(e) => {
                                 const serviceId = e.target.value;
 
@@ -132,7 +140,9 @@ function ManageQueue() {
                                 fetchQueue(serviceId);
                             }}
                         >
-                            <option value="">Select Department</option>
+                            <option value="">
+                                {loadingServices ? "Loading departments..." : "Select Department"}
+                            </option>
 
                             {services.map((service) => (
                                 <option key={service._id} value={service._id}>
@@ -145,7 +155,7 @@ function ManageQueue() {
                     <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-5 sm:p-6">
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-5">
                             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-                                Today's Queue
+                                Today's Live Queue
                             </h2>
 
                             {pageLoading && (
@@ -163,7 +173,13 @@ function ManageQueue() {
                             </div>
                         ) : pageLoading ? (
                             <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100">
-                                <p className="text-slate-500">Loading queue...</p>
+                                <div className="flex flex-col items-center">
+                                    <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+
+                                    <p className="mt-4 text-slate-500">
+                                        Loading queue...
+                                    </p>
+                                </div>
                             </div>
                         ) : tokens.length === 0 ? (
                             <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100">
@@ -196,7 +212,11 @@ function ManageQueue() {
 
                                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full lg:w-auto">
                                                 <button
-                                                    disabled={isThisTokenLoading}
+                                                    disabled={
+                                                        isThisTokenLoading ||
+                                                        queueToken.status === "called" ||
+                                                        queueToken.status === "completed"
+                                                    }
                                                     onClick={() =>
                                                         handleTokenAction(queueToken._id, "call")
                                                     }
@@ -208,7 +228,10 @@ function ManageQueue() {
                                                 </button>
 
                                                 <button
-                                                    disabled={isThisTokenLoading}
+                                                    disabled={
+                                                        isThisTokenLoading ||
+                                                        queueToken.status === "completed"
+                                                    }
                                                     onClick={() =>
                                                         handleTokenAction(queueToken._id, "complete")
                                                     }
