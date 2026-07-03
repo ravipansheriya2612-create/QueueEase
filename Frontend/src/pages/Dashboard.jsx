@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import API from "../services/api";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import toast from 'react-hot-toast';
 
 function Dashboard() {
@@ -20,6 +20,8 @@ function Dashboard() {
     const [generatingId, setGeneratingId] = useState(null);
     const [cancelling, setCancelling] = useState(false);
     const [loadingServices, setLoadingServices] = useState(true);
+
+    const tokenRef = useRef(null);
 
     const fetchServices = async () => {
         setLoadingServices(true);
@@ -49,8 +51,16 @@ function Dashboard() {
             const res = await API.post("/tokens/generate", { serviceId }, { headers: { Authorization: `Bearer ${token}` } });
 
             toast.success(`Token generated: ${res.data.token.tokenNumber}`);
-            fetchMyToken();
-            fetchServices();
+
+            await fetchMyToken();
+            await fetchServices();
+
+            setTimeout(() => {
+                tokenRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            }, 300);
 
         } catch (error) {
             toast.error(error.response?.data?.message || "Token generation failed");
@@ -118,7 +128,10 @@ function Dashboard() {
                     </div>
 
                     {myToken && (
-                        <div className="bg-white/90 backdrop-blur p-5 sm:p-6 rounded-2xl shadow-xl border border-slate-200 mb-8">
+                        <div
+                            ref={tokenRef}
+                            className="bg-white/90 backdrop-blur p-5 sm:p-6 rounded-2xl shadow-xl border border-slate-200 mb-8"
+                        >
                             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
 
                                 <div className="w-full">
