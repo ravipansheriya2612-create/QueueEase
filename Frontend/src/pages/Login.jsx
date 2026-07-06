@@ -172,20 +172,6 @@ function Login() {
                         </p>
                     </div>
 
-                    <div className="bg-blue-500/10 border border-blue-400/20 rounded-xl p-4 mb-5">
-                        <h3 className="font-bold text-blue-300 mb-3">
-                            Explore Features
-                        </h3>
-
-                        <ul className="space-y-2 text-sm text-slate-300">
-                            <li>✅ Generate Queue Tokens</li>
-                            <li>✅ Live Queue Tracking</li>
-                            <li>✅ Socket.IO Real-Time Updates</li>
-                            <li>✅ Admin Dashboard</li>
-                            <li>✅ Queue Analytics</li>
-                        </ul>
-                    </div>
-
                     <div className="space-y-5">
                         <div className="bg-white/10 rounded-2xl p-5 border border-white/10">
                             <h3 className="text-xl font-bold text-blue-300 mb-3">
