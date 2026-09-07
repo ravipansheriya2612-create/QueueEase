@@ -68,8 +68,10 @@ function Login() {
             } else {
                 navigate("/dashboard");
             }
+
         } catch (error) {
             toast.error(error.response?.data?.message || "Login failed");
+
         } finally {
             setLoading(false);
         }
@@ -77,11 +79,14 @@ function Login() {
 
     return (
         <div className="min-h-screen bg-linear-to-br from-blue-50 via-slate-100 to-cyan-50 flex items-center justify-center px-4 sm:px-6 py-8">
+
             <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
 
                 <div className="bg-white/90 backdrop-blur rounded-3xl shadow-2xl border border-slate-200 p-6 sm:p-8">
                     <form onSubmit={handleSubmit}>
+
                         <div className="text-center mb-8">
+
                             <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-3xl">
                                 🏥
                             </div>
@@ -101,11 +106,7 @@ function Login() {
                                     Email Address
                                 </label>
 
-                                <input
-                                    type="email"
-                                    name="email"
-                                    disabled={loading}
-                                    placeholder="Enter your email"
+                                <input type="email" name="email" disabled={loading} placeholder="Enter your email"
                                     value={formData.email}
                                     onChange={handleChange}
                                     className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
@@ -118,11 +119,7 @@ function Login() {
                                     Password
                                 </label>
 
-                                <input
-                                    type="password"
-                                    name="password"
-                                    disabled={loading}
-                                    placeholder="Enter your password"
+                                <input type="password" name="password" disabled={loading} placeholder="Enter your password"
                                     value={formData.password}
                                     onChange={handleChange}
                                     className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
@@ -130,14 +127,8 @@ function Login() {
                                 />
                             </div>
 
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className={`w-full py-3 rounded-xl font-semibold shadow-lg transition text-white ${loading
-                                    ? "bg-blue-400 cursor-not-allowed"
-                                    : "bg-blue-600 hover:bg-blue-700"
-                                    }`}
-                            >
+                            <button type="submit" disabled={loading}
+                                className={`w-full py-3 rounded-xl font-semibold shadow-lg transition text-white ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}`} >
                                 {loading ? "Logging in..." : "Login"}
                             </button>
                         </div>
@@ -146,8 +137,8 @@ function Login() {
                     <div className="mt-6 text-center">
                         <p className="text-slate-600">
                             Don't have an account?{" "}
-                            <Link
-                                to="/register"
+
+                            <Link to="/register"
                                 className={`text-blue-600 font-semibold hover:underline ${loading ? "pointer-events-none opacity-60" : ""
                                     }`}
                             >
@@ -158,6 +149,7 @@ function Login() {
                 </div>
 
                 <div className="bg-slate-900 text-white rounded-3xl shadow-2xl p-6 sm:p-8 flex flex-col justify-center">
+
                     <div className="text-center mb-8">
                         <div className="w-20 h-20 mx-auto bg-blue-500 rounded-full flex items-center justify-center text-4xl">
                             🏥
@@ -188,10 +180,7 @@ function Login() {
                                 Patient@123
                             </p>
 
-                            <button
-                                type="button"
-                                onClick={fillDemoPatient}
-                                disabled={loading}
+                            <button type="button" onClick={fillDemoPatient} disabled={loading}
                                 className="mt-4 w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-lg font-semibold disabled:bg-blue-400 disabled:cursor-not-allowed"
                             >
                                 Fill Patient Login
@@ -213,10 +202,7 @@ function Login() {
                                 Admin@123
                             </p>
 
-                            <button
-                                type="button"
-                                onClick={fillDemoAdmin}
-                                disabled={loading}
+                            <button type="button" onClick={fillDemoAdmin} disabled={loading}
                                 className="mt-4 w-full bg-green-600 hover:bg-green-700 py-2 rounded-lg font-semibold disabled:bg-green-400 disabled:cursor-not-allowed"
                             >
                                 Fill Admin Login

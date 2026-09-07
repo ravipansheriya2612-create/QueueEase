@@ -29,8 +29,10 @@ function Dashboard() {
         try {
             const res = await API.get("/services");
             setServices(res.data.services);
+
         } catch (error) {
             toast.error("Failed to load departments");
+
         } finally {
             setLoadingServices(false);
         }
@@ -64,6 +66,7 @@ function Dashboard() {
 
         } catch (error) {
             toast.error(error.response?.data?.message || "Token generation failed");
+
         } finally {
             setGeneratingId(null);
         }
@@ -74,6 +77,7 @@ function Dashboard() {
             const res = await API.get("/tokens/my-token", { headers: { Authorization: `Bearer ${token}` } });
 
             setMyToken(res.data.token);
+
         } catch (error) {
             if (error.response?.status !== 404) {
                 toast.error("Failed to load your token");
@@ -101,6 +105,7 @@ function Dashboard() {
 
         } catch (error) {
             toast.error(error.response?.data?.message || "Token cancel failed");
+
         } finally {
             setCancelling(false);
         }
@@ -128,10 +133,9 @@ function Dashboard() {
                     </div>
 
                     {myToken && (
-                        <div
-                            ref={tokenRef}
-                            className="bg-white/90 backdrop-blur p-5 sm:p-6 rounded-2xl shadow-xl border border-slate-200 mb-8"
-                        >
+                        <div ref={tokenRef}
+                            className="bg-white/90 backdrop-blur p-5 sm:p-6 rounded-2xl shadow-xl border border-slate-200 mb-8" >
+
                             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
 
                                 <div className="w-full">
@@ -167,18 +171,13 @@ function Dashboard() {
                                     </div>
                                 </div>
 
-                                <button
-                                    disabled={cancelling}
+                                <button disabled={cancelling}
                                     onClick={() => {
                                         if (window.confirm("Are you sure you want to cancel your token?")) {
                                             cancelToken(myToken._id);
                                         }
                                     }}
-                                    className={`w-full lg:w-auto text-white px-5 py-3 rounded-xl font-semibold shadow transition ${cancelling
-                                        ? "bg-red-400 cursor-not-allowed"
-                                        : "bg-red-600 hover:bg-red-700"
-                                        }`}
-                                >
+                                    className={`w-full lg:w-auto text-white px-5 py-3 rounded-xl font-semibold shadow transition ${cancelling ? "bg-red-400 cursor-not-allowed" : "bg-red-600 hover:bg-red-700"}`} >
                                     {cancelling ? "Cancelling..." : "Cancel Token"}
                                 </button>
                             </div>
@@ -219,10 +218,9 @@ function Dashboard() {
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {services.map((service) => (
-                                <div
-                                    key={service._id}
-                                    className="bg-white rounded-2xl shadow-lg border border-slate-200 p-5 sm:p-6 hover:-translate-y-1 hover:shadow-xl transition"
-                                >
+                                <div key={service._id}
+                                    className="bg-white rounded-2xl shadow-lg border border-slate-200 p-5 sm:p-6 hover:-translate-y-1 hover:shadow-xl transition" >
+
                                     <div className="w-12 h-12 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center font-bold mb-4">
                                         {service.name?.charAt(0)}
                                     </div>
@@ -247,16 +245,9 @@ function Dashboard() {
 
                                     <button
                                         disabled={generatingId === service._id || myToken} onClick={() => generateToken(service._id)}
-                                        className={`mt-5 w-full text-white px-4 py-3 rounded-xl font-semibold shadow transition ${generatingId === service._id
-                                            ? "bg-blue-400 cursor-not-allowed"
-                                            : "bg-blue-600 hover:bg-blue-700"
-                                            }`}
-                                    >
-                                        {myToken
-                                            ? "Token Already Active"
-                                            : generatingId === service._id
-                                                ? "Generating..."
-                                                : "Generate Token"}
+                                        className={`mt-5 w-full text-white px-4 py-3 rounded-xl font-semibold shadow transition ${generatingId === service._id ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}`} >
+
+                                        {myToken ? "Token Already Active" : generatingId === service._id ? "Generating..." : "Generate Token"}
                                     </button>
                                 </div>
                             ))}

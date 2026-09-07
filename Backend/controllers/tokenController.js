@@ -87,6 +87,7 @@ export const myToken = async (req, res) => {
         res.status(200).json({
             token,
         });
+
     } catch (error) {
         res.status(500).json({
             message: error.message,
@@ -196,7 +197,6 @@ export const skipToken = async (req, res) => {
         }
 
         token.status = "skipped";
-
         await token.save();
 
         // await token.populate("user", "name phone");
@@ -220,6 +220,7 @@ export const skipToken = async (req, res) => {
             message: "Token skipped successfully",
             token,
         });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -284,6 +285,7 @@ export const getAnalytics = async (req, res) => {
             skippedTokens,
             waitingTokens,
         });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -356,10 +358,9 @@ export const getAdvancedAnalytics = async (req, res) => {
             statusWiseTokens,
             departmentWiseTokens,
             averageWaitingTime:
-                averageWaitingTimeData.length > 0
-                    ? Number(averageWaitingTimeData[0].avgWaitingTime.toFixed(2))
-                    : 0,
+                averageWaitingTimeData.length > 0 ? Number(averageWaitingTimeData[0].avgWaitingTime.toFixed(2)) : 0,
         });
+        
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

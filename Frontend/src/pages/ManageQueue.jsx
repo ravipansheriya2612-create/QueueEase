@@ -28,8 +28,10 @@ function ManageQueue() {
         try {
             const res = await API.get("/services");
             setServices(res.data.services);
+
         } catch (error) {
             toast.error("Failed to load departments");
+
         } finally {
             setLoadingServices(false);
         }
@@ -42,8 +44,10 @@ function ManageQueue() {
             setPageLoading(true);
             const res = await API.get(`/tokens/live/${serviceId}`);
             setTokens(res.data.tokens);
+
         } catch (error) {
             toast.error("Failed to load queue");
+
         } finally {
             setPageLoading(false);
         }
@@ -58,8 +62,10 @@ function ManageQueue() {
             await API.put(`/tokens/admin/${id}/${action}`, {}, authHeader);
             await fetchQueue(selectedService);
             toast.success(`Token ${action}ed successfully`);
+
         } catch (error) {
             toast.error(error.response?.data?.message || `${action} failed`);
+
         } finally {
             setActionLoading(null);
         }
@@ -101,7 +107,9 @@ function ManageQueue() {
             <Navbar />
 
             <div className="min-h-screen bg-linear-to-br from-blue-50 via-slate-100 to-cyan-50 px-4 sm:px-6 md:px-8 py-8">
+
                 <div className="max-w-7xl mx-auto">
+
                     <div className="mb-8 text-center sm:text-left">
                         <p className="text-blue-600 font-semibold text-sm sm:text-base">
                             Admin
@@ -123,8 +131,7 @@ function ManageQueue() {
 
                         <select
                             className="w-full sm:w-96 border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
-                            value={selectedService}
-                            disabled={loadingServices || pageLoading || actionLoading}
+                            value={selectedService} disabled={loadingServices || pageLoading || actionLoading}
                             onChange={(e) => {
                                 const serviceId = e.target.value;
 
@@ -153,6 +160,7 @@ function ManageQueue() {
                     </div>
 
                     <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-5 sm:p-6">
+
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-5">
                             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
                                 Today's Live Queue
@@ -171,6 +179,7 @@ function ManageQueue() {
                                     Please select a department
                                 </p>
                             </div>
+
                         ) : pageLoading ? (
                             <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100">
                                 <div className="flex flex-col items-center">
@@ -181,10 +190,12 @@ function ManageQueue() {
                                     </p>
                                 </div>
                             </div>
+
                         ) : tokens.length === 0 ? (
                             <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100">
                                 <p className="text-slate-500">No active queue</p>
                             </div>
+
                         ) : (
                             <div className="space-y-4">
                                 {tokens.map((queueToken) => {
@@ -192,10 +203,8 @@ function ManageQueue() {
                                         actionLoading?.endsWith(queueToken._id);
 
                                     return (
-                                        <div
-                                            key={queueToken._id}
-                                            className="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col lg:flex-row justify-between lg:items-center gap-4"
-                                        >
+                                        <div key={queueToken._id}
+                                            className="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col lg:flex-row justify-between lg:items-center gap-4" >
                                             <div>
                                                 <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">
                                                     Token #{queueToken.tokenNumber}
@@ -253,6 +262,7 @@ function ManageQueue() {
                                                         ? "Skipping..."
                                                         : "Skip"}
                                                 </button>
+
                                             </div>
                                         </div>
                                     );

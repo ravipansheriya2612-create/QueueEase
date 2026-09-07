@@ -10,6 +10,7 @@ export const createService = async (req, res) => {
             message: "Service created successfully",
             service,
         });
+
     } catch (error) {
         res.status(500).json({
             message: error.message,
@@ -24,6 +25,7 @@ export const getServices = async (req, res) => {
         res.status(200).json({
             services,
         })
+
     } catch (error) {
         res.status(500).json({
             message: error.message,
@@ -37,7 +39,7 @@ export const deleteService = async (req, res) => {
 
         if (!service) {
             return res.status(404).json({
-                message: "Department not found",
+                message: "Service not found",
             });
         }
         await service.deleteOne();
@@ -45,7 +47,7 @@ export const deleteService = async (req, res) => {
         res.status(200).json({
             message: "Department deleted successfully",
         });
-        
+
     } catch (error) {
         res.status(500).json({
             message: error.message,

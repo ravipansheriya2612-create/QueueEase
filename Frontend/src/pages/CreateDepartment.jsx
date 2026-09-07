@@ -46,6 +46,7 @@ function CreateDepartment() {
 
         } catch (error) {
             toast.error(error.response?.data?.message || "Department creation failed");
+
         } finally {
             setLoading(false);
         }
@@ -56,10 +57,10 @@ function CreateDepartment() {
 
             <div className="min-h-screen bg-linear-to-br from-blue-50 via-slate-100 to-cyan-50 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-10">
                 <div className="w-full max-w-lg">
-                    <form
-                        onSubmit={handleSubmit}
-                        className="bg-white/90 backdrop-blur rounded-3xl shadow-2xl border border-slate-200 p-6 sm:p-8"
-                    >
+
+                    <form onSubmit={handleSubmit}
+                        className="bg-white/90 backdrop-blur rounded-3xl shadow-2xl border border-slate-200 p-6 sm:p-8" >
+
                         <div className="text-center mb-8">
                             <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-3xl">
                                 🏥
@@ -81,16 +82,10 @@ function CreateDepartment() {
                                     Department Name
                                 </label>
 
-                                <input
-                                    type="text"
-                                    name="name"
-                                    placeholder="e.g. Cardiology"
-                                    value={formData.name}
-                                    disabled={loading}
+                                <input type="text" name="name" placeholder="e.g. Cardiology" value={formData.name} disabled={loading}
                                     onChange={handleChange}
                                     className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
-                                    required
-                                />
+                                    required />
                             </div>
 
                             <div>
@@ -98,16 +93,11 @@ function CreateDepartment() {
                                     Description
                                 </label>
 
-                                <textarea
-                                    name="description"
-                                    placeholder="Enter department description..."
-                                    value={formData.description}
-                                    disabled={loading}
+                                <textarea name="description" placeholder="Enter department description..." value={formData.description} disabled={loading}
                                     onChange={handleChange}
                                     rows="4"
                                     className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
-                                    required
-                                />
+                                    required />
                             </div>
 
                             <div>
@@ -115,27 +105,15 @@ function CreateDepartment() {
                                     Average Service Time (Minutes)
                                 </label>
 
-                                <input
-                                    type="number"
-                                    name="averageServiceTime"
-                                    placeholder="e.g. 15"
-                                    value={formData.averageServiceTime}
-                                    disabled={loading}
+                                <input type="number" name="averageServiceTime" placeholder="e.g. 15" value={formData.averageServiceTime} disabled={loading}
                                     onChange={handleChange}
                                     min="1"
                                     className="w-full border border-slate-300 bg-slate-50 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100 disabled:cursor-not-allowed"
-                                    required
-                                />
+                                    required />
                             </div>
 
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className={`w-full py-3 rounded-xl font-semibold shadow-lg transition text-white ${loading
-                                    ? "bg-blue-400 cursor-not-allowed"
-                                    : "bg-blue-600 hover:bg-blue-700"
-                                    }`}
-                            >
+                            <button type="submit" disabled={loading}
+                                className={`w-full py-3 rounded-xl font-semibold shadow-lg transition text-white ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}`} >
                                 {loading ? "Creating..." : "Create Department"}
                             </button>
 

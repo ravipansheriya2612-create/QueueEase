@@ -23,9 +23,9 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute> <Dashboard /> </ProtectedRoute>} />
         <Route path="/admin" element={<ProtectedRoute> <AdminDashboard /> </ProtectedRoute>} />
         <Route path="/admin/create-department" element={<ProtectedRoute> <CreateDepartment /> </ProtectedRoute>} />
-        <Route path="/admin/departments" element={ <ProtectedRoute> <ManageDepartments /> </ProtectedRoute> } />
-        <Route path="/admin/queue" element={ <ProtectedRoute> <ManageQueue /> </ProtectedRoute> } />
-        
+        <Route path="/admin/departments" element={<ProtectedRoute> <ManageDepartments /> </ProtectedRoute>} />
+        <Route path="/admin/queue" element={<ProtectedRoute> <ManageQueue /> </ProtectedRoute>} />
+
       </Routes>
     </BrowserRouter>
   );

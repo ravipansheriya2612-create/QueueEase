@@ -20,8 +20,10 @@ function AdminDashboard() {
     try {
       const res = await API.get("/tokens/admin/analytics", authHeader);
       setAnalytics(res.data);
+
     } catch (error) {
       console.log(error);
+
     } finally {
       setLoading(false);
     }
@@ -36,7 +38,9 @@ function AdminDashboard() {
       <Navbar />
 
       <div className="min-h-screen bg-linear-to-br from-blue-50 via-slate-100 to-cyan-50 px-4 sm:px-6 md:px-8 py-8">
+
         <div className="max-w-7xl mx-auto">
+
           <div className="mb-8 text-center sm:text-left">
             <p className="text-blue-600 font-semibold text-sm sm:text-base">
               Administration Panel
@@ -49,8 +53,10 @@ function AdminDashboard() {
 
           {loading ? (
             <div className="bg-white rounded-2xl p-10 shadow-lg border border-slate-200 mb-8 flex flex-col items-center">
+
               <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
               <p className="mt-4 text-slate-500 font-medium">Loading analytics...</p>
+
             </div>
           ) : analytics && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-8">
@@ -61,10 +67,9 @@ function AdminDashboard() {
                 ["Skipped", analytics.skippedTokens, "text-orange-500"],
                 ["Cancelled", analytics.cancelledTokens, "text-red-600"],
               ].map((item) => (
-                <div
-                  key={item[0]}
-                  className="bg-white rounded-2xl p-5 shadow-lg border border-slate-200"
-                >
+                <div key={item[0]}
+                  className="bg-white rounded-2xl p-5 shadow-lg border border-slate-200" >
+
                   <p className="text-slate-500 text-sm">{item[0]}</p>
                   <h3 className={`text-3xl font-extrabold mt-2 ${item[2]}`}>
                     {item[1]}
@@ -75,8 +80,8 @@ function AdminDashboard() {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Link
-              to="/admin/departments"
+
+            <Link to="/admin/departments"
               className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-slate-200 hover:-translate-y-1 hover:shadow-xl transition"
             >
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
@@ -88,8 +93,7 @@ function AdminDashboard() {
               </p>
             </Link>
 
-            <Link
-              to="/admin/queue"
+            <Link to="/admin/queue"
               className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-slate-200 hover:-translate-y-1 hover:shadow-xl transition"
             >
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">

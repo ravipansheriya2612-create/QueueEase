@@ -20,8 +20,10 @@ function LiveQueue() {
         try {
             const res = await API.get("/services");
             setServices(res.data.services);
+
         } catch (error) {
             toast.error("Failed to load departments");
+
         } finally {
             setLoadingServices(false);
         }
@@ -38,8 +40,10 @@ function LiveQueue() {
         try {
             const res = await API.get(`/tokens/live/${serviceId}`);
             setTokens(res.data.tokens);
+
         } catch (error) {
             toast.error("Failed to load queue");
+
         } finally {
             setLoadingQueue(false);
         }
@@ -77,7 +81,9 @@ function LiveQueue() {
             <Navbar />
 
             <div className="min-h-screen bg-linear-to-br from-blue-50 via-slate-100 to-cyan-50 px-4 sm:px-6 md:px-8 py-8">
+
                 <div className="max-w-5xl mx-auto">
+
                     <div className="mb-8 text-center sm:text-left">
                         <p className="text-blue-600 font-semibold text-sm sm:text-base">
                             Real-Time Tracking
@@ -93,6 +99,7 @@ function LiveQueue() {
                     </div>
 
                     <div className="bg-white/90 backdrop-blur rounded-2xl shadow-xl border border-slate-200 p-5 sm:p-6">
+
                         <select
                             className="w-full sm:w-96 border border-slate-300 bg-slate-50 p-3 rounded-xl mb-6 outline-none focus:ring-2 focus:ring-blue-500"
                             value={selectedService}
@@ -105,6 +112,7 @@ function LiveQueue() {
                             <option value="">
                                 {loadingServices ? "Loading departments..." : "Select Department"}
                             </option>
+
                             {services.map((service) => (
                                 <option key={service._id} value={service._id}>
                                     {service.name}
@@ -118,10 +126,14 @@ function LiveQueue() {
                                     Please select a department to view the live queue.
                                 </p>
                             </div>
-                        ) : loadingQueue ? (<div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col items-center">
-                            <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-                            <p className="text-slate-500 font-medium mt-4">Loading queue...</p>
-                        </div>
+
+                        ) : loadingQueue ? (
+                            <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col items-center">
+
+                                <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+
+                                <p className="text-slate-500 font-medium mt-4">Loading queue...</p>
+                            </div>
                         ) : tokens.length === 0 ? (
                             <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100">
                                 <p className="text-slate-500 font-medium">
@@ -131,10 +143,9 @@ function LiveQueue() {
                         ) : (
                             <div className="space-y-4">
                                 {tokens.map((token) => (
-                                    <div
-                                        key={token._id}
-                                        className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 hover:bg-white transition"
-                                    >
+                                    <div key={token._id}
+                                        className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 hover:bg-white transition" >
+
                                         <div>
                                             <p className="text-xl font-extrabold text-slate-900">
                                                 Token #{token.tokenNumber}
@@ -148,6 +159,7 @@ function LiveQueue() {
                                         <span className="capitalize bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-bold w-fit">
                                             {token.status}
                                         </span>
+
                                     </div>
                                 ))}
                             </div>

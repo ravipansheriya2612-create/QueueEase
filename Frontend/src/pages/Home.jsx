@@ -8,6 +8,7 @@ function Home() {
 
             <section className="min-h-screen bg-linear-to-br from-blue-50 via-slate-100 to-cyan-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
                     <div className="text-center lg:text-left">
                         <span className="inline-block bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-5">
                             Smart Hospital Queue System
@@ -23,15 +24,13 @@ function Home() {
                         </p>
 
                         <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 mt-8">
-                            <Link
-                                to="/dashboard"
+                            <Link to="/dashboard"
                                 className="bg-blue-600 hover:bg-blue-700 text-white px-7 py-3 rounded-xl font-semibold shadow-lg transition text-center"
                             >
                                 Get Token
                             </Link>
 
-                            <Link
-                                to="/live-queue"
+                            <Link to="/live-queue"
                                 className="bg-white hover:bg-slate-50 text-blue-600 px-7 py-3 rounded-xl font-semibold border border-blue-200 shadow transition text-center"
                             >
                                 View Live Queue
@@ -39,6 +38,7 @@ function Home() {
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10">
+
                             <div className="bg-white/70 rounded-2xl p-4 border border-slate-200 shadow-sm">
                                 <h3 className="text-2xl font-bold text-slate-800">24/7</h3>
                                 <p className="text-slate-500 text-sm">Queue Access</p>
@@ -57,6 +57,7 @@ function Home() {
                     </div>
 
                     <div className="relative">
+
                         <div className="absolute -top-6 -right-4 sm:-right-6 w-24 sm:w-32 h-24 sm:h-32 bg-blue-200 rounded-full blur-3xl opacity-70"></div>
                         <div className="absolute -bottom-6 -left-4 sm:-left-6 w-24 sm:w-32 h-24 sm:h-32 bg-cyan-200 rounded-full blur-3xl opacity-70"></div>
 
@@ -75,10 +76,9 @@ function Home() {
                                     ["Token #13", "Estimated wait: 10 min", "Waiting", "bg-yellow-100 text-yellow-700"],
                                     ["Token #14", "Estimated wait: 20 min", "Waiting", "bg-yellow-100 text-yellow-700"],
                                 ].map((item) => (
-                                    <div
-                                        key={item[0]}
-                                        className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100"
-                                    >
+                                    <div key={item[0]}
+                                        className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100" >
+
                                         <div>
                                             <p className="font-bold text-slate-800">{item[0]}</p>
                                             <p className="text-sm text-slate-500">{item[1]}</p>
@@ -110,10 +110,9 @@ function Home() {
                             ["3", "Generate Token", "Get your digital queue token."],
                             ["4", "Track Live Queue", "Watch status update in real-time."],
                         ].map((item) => (
-                            <div
-                                key={item[0]}
-                                className="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 text-center hover:-translate-y-1 transition"
-                            >
+                            <div key={item[0]}
+                                className="bg-white p-6 rounded-2xl shadow-lg border border-slate-200 text-center hover:-translate-y-1 transition" >
+
                                 <div className="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-bold shadow">
                                     {item[0]}
                                 </div>
